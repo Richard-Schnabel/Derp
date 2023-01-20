@@ -1,4 +1,4 @@
-# Derp (Developer's Engine for Recording Programming)
- Tour de App
+# Derp
+ Developer's Engine for Recording Programming
 # Sus
  nevim
