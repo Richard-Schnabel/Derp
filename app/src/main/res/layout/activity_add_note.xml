@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".AddToDatabase">
+
+
+    <TextView
+        android:id="@+id/titletext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Přidat záznam"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/dateinput"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="#BBBBFF"
+            android:hint="Datum"
+            android:inputType="date"
+            android:lines="1"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="#8000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/datebtn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#00F"
+            android:text="Vyber"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="@+id/dateinput"
+            app:layout_constraintTop_toTopOf="@+id/dateinput" />
+
+        <EditText
+            android:id="@+id/jazykinput"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="#BBBBFF"
+            android:hint="Programovací jazyk"
+            android:inputType="text"
+            android:lines="1"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="#8000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateinput" />
+
+        <SeekBar
+            android:id="@+id/rateinput"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="194dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="#BBBBFF"
+            android:indeterminate="false"
+            android:max="4"
+            android:progress="0"
+            android:progressTint="#FF0000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/jazykinput" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Hodnocení"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/timeinput"
+            app:layout_constraintEnd_toStartOf="@+id/rateinput"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/jazykinput" />
+
+        <EditText
+            android:id="@+id/timeinput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#BBBBFF"
+            android:gravity="top"
+            android:hint="Čas"
+            android:inputType="numberSigned"
+            android:lines="1"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:textColorHint="#8000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rateinput" />
+
+        <EditText
+            android:id="@+id/descriptioninput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#BBBBFF"
+            android:gravity="top"
+            android:hint="Popis"
+            android:lines="3"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:textColorHint="#8000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeinput" />
+
+        <Button
+            android:id="@+id/savebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#00F"
+            android:text="Uložit"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptioninput" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1         2         3          4          5"
+            android:textSize="13.5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rateinput"
+            app:layout_constraintEnd_toEndOf="@+id/rateinput"
+            app:layout_constraintStart_toStartOf="@+id/rateinput" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
