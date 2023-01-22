@@ -1,6 +1,9 @@
 package com.example.derp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Path;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,21 +14,36 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.prefs.Preferences;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
 
+    //definuj texty
     String errInputNull = "$nic$";
     String hoverDelete = "Odstranit";
+    String hoverEdit = "Upravit";
     String alertDeleted = "Odstraněno";
 
     Context context;
-    RealmResults<TDA> dataList;
+    RealmResults<TDA> zaznamy;
 
-    public TDAAdapter(Context context, RealmResults<TDA> dataList) {
+    public TDAAdapter(Context context, RealmResults<TDA> zaznamy) {
         this.context = context;
-        this.dataList = dataList;
+
+        //získej uložené nastavení a pokud není zvoleno, tak createdTime sestupně
+        Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+        String sortOrder = prefs.get("sortOrder", Sort.DESCENDING.toString());
+        String sortBy = prefs.get("sortBy", "createdTime");
+
+        //tady budou podobně udělány filtry a reddit tagy
+
+        //seřaď záznamy
+        this.zaznamy = zaznamy.sort(sortBy, Sort.valueOf(sortOrder));
     }
 
     @NonNull
@@ -36,30 +54,33 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TDAAdapter.MyViewHolder holder, int position) {
-        TDA TDA = dataList.get(position);
 
-        //vpiš data z databáze do listu
-        holder.popisOut.setText(TDA.getPopis().equals("") ? errInputNull : TDA.getPopis());
-        holder.dateOut.setText(TDA.getDate().equals("") ? errInputNull : TDA.getDate());
-        holder.jazykOut.setText(TDA.getJazyk().equals("") ? errInputNull : TDA.getJazyk());
-        holder.rateOut.setText(TDA.getRate().equals("") ? errInputNull : (Integer.parseInt(TDA.getRate()) + 1) + " / 5");
-        holder.timeOut.setText(TDA.getTime().equals("") ? errInputNull : TDA.getTime() + " min");
+        //najdi zaznam v databázi
+        TDA zaznam = zaznamy.get(position);
 
-        //onhold
+        //vpiš data záznamu z databáze do listu
+        holder.popisOut.setText(zaznam.getPopis().equals("") ? errInputNull : zaznam.getPopis());
+        holder.dateOut.setText(zaznam.getDate().equals("") ? errInputNull : zaznam.getDate());
+        holder.jazykOut.setText(zaznam.getJazyk().equals("") ? errInputNull : zaznam.getJazyk());
+        holder.rateOut.setText(zaznam.getRate().equals("") ? errInputNull : (Integer.parseInt(zaznam.getRate()) + 1) + " / 5");
+        holder.timeOut.setText(zaznam.getTime().equals("") ? errInputNull : zaznam.getTime() + " min");
+
+        //po podržení záznamu
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
-                //vyskoč menu
+                //vyskoč menu s buttony
                 PopupMenu menu = new PopupMenu(context,v);
-
-                //přidej detele button
                 menu.getMenu().add(hoverDelete);
+                menu.getMenu().add(hoverEdit);
 
-                //po kliknutí na delete
+                //po kliknutí na něco
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
+                        //pokud to něco je Delete
                         if(item.getTitle().equals(hoverDelete)){
 
                             //připoj se k databázi
@@ -67,17 +88,36 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
                             realm.beginTransaction();
 
                             //smash záznam
-                            TDA.deleteFromRealm();
+                            zaznam.deleteFromRealm();
                             realm.commitTransaction();
 
                             //křič "smazáno"
                             Toast.makeText(context,alertDeleted,Toast.LENGTH_SHORT).show();
+
+                            //reloadni Main bez animace
+                            Intent intent = new Intent(v.getContext(), Main.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //nevim co to dela, ale bez toho to nefunguje
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            v.getContext().startActivity(intent);
+
+                        }
+
+                        //pokud to něco je Edit
+                        if(item.getTitle().equals(hoverEdit)){
+                            String id = String.valueOf(zaznam.getCreatedTime());
+
+                            //otevři Edit s animací
+                            Intent intent = new Intent(v.getContext(), Edit.class);
+                            intent.putExtra("id", id);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //nevim co to dela, ale bez toho to nefunguje
+                            v.getContext().startActivity(intent);
                         }
                         return true;
                     }
                 });
-                menu.show();
 
+                //ukaž menu
+                menu.show();
                 return true;
             }
         });
@@ -86,7 +126,7 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return zaznamy.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

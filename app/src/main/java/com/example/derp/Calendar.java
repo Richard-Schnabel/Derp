@@ -17,18 +17,17 @@ public class Calendar extends AppCompatActivity {
         //najdi kalendář
         CalendarView kalendar = findViewById(R.id.calendarViewInput);
 
-        //kalendar onclick = ...
+        //po kliknutí na datum
         kalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                //zformátuj datum
-                String date = (i1 + 1) + "/" + i2 + "/" + i;
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int y, int m, int d) {
 
-                //vytvoř intent a přidej do něj zvolene datum date
+                //zformátuj datum
+                String date = d + "/" + (m + 1) + "/" + y;
+
+                //vrať se zpět a datum si pamatuj
                 Intent intent = new Intent(Calendar.this, AddToDatabase.class);
                 intent.putExtra("date", date);
-
-                //jdi zpět na "new log"
                 startActivity(intent);
             }
         });

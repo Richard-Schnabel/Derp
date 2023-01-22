@@ -2,14 +2,12 @@ package com.example.derp;
 
 
 import io.realm.RealmObject;
-
 public class TDA extends RealmObject {
     String jazyk;
     String popis;
     String rate;
     String date;
     String time;
-
     long createdTime;
 
     public String getJazyk() {
@@ -60,3 +58,4 @@ public class TDA extends RealmObject {
         this.createdTime = createdTime;
     }
 }
+

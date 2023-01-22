@@ -1,22 +1,23 @@
 package com.example.derp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import io.realm.Realm;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import android.widget.Button;
 
-import com.google.android.material.button.MaterialButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class AddToDatabase extends AppCompatActivity {
+import io.realm.Realm;
+
+public class Edit extends AppCompatActivity {
 
     //definuj texty
+    String alertUlozeno = "Záznam byl uložen";
     String alertJazykNenastaven = "Zadejte prosím Jazyk";
     String alertDateNenastaven = "Zadejte prosím Datum";
     String alertTimeNenastaven = "Zadejte prosím Čas";
@@ -24,7 +25,11 @@ public class AddToDatabase extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        setContentView(R.layout.activity_edit);
+
+        //získej createdTime editovaného záznamu
+        Intent incomingIntent = getIntent();
+        String createdTime = incomingIntent.getStringExtra("id");
 
         //najdi všechny inputy
         EditText jazykInput = findViewById(R.id.jazykinput);
@@ -33,31 +38,24 @@ public class AddToDatabase extends AppCompatActivity {
         EditText dateInput = findViewById(R.id.dateinput);
         EditText timeInput = findViewById(R.id.timeinput);
 
-        //ulož datum z kalendáře a vlož ho do inputy
-        Intent incomingIntent = getIntent();
-        String date = incomingIntent.getStringExtra("date");
-        dateInput.setText(date);
-
-        //najdi buttony
+        //najdi všechny buttony
         Button saveButton = findViewById(R.id.savebtn);
-        Button dateBtn = findViewById(R.id.datebtn);
 
         //připoj se k databázi
         Realm.init(getApplicationContext());
         Realm realm = Realm.getDefaultInstance();
 
-        //po kliknutí na kalendář...
-        dateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        //najdi zaznam podle createdTime
+        TDA zaznam = realm.where(TDA.class).equalTo("createdTime",Long.valueOf(createdTime)).findFirst();
 
-                //zobraz kalendář
-                Intent intent = new Intent(AddToDatabase.this, Calendar.class);
-                startActivity(intent);
-            }
-        });
+        //nastav inputy na data z editovaného záznamu
+        jazykInput.setText(zaznam.getJazyk());
+        popisInput.setText(zaznam.getPopis());
+        rateInput.setProgress(Integer.parseInt(zaznam.getRate()));
+        dateInput.setText(zaznam.getDate());
+        timeInput.setText(zaznam.getTime());
 
-        //po kliknutí na uložit
+        //po kliknutí na save
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +68,7 @@ public class AddToDatabase extends AppCompatActivity {
                 String date = dateInput.getText().toString();
 
                 //zkontroluj, jestli jsou hodnoty nastavené a pokud ne tak to hlaš a nepokračuj
-                //U "rate" je to zbytečné, protože nejde nastavit neplatná hodnota
+                //U rate je to zbytečné, protože nejde nastavim neplatná hodnota
                 if (date.equals("")) {
                     Toast.makeText(v.getContext(),alertDateNenastaven,Toast.LENGTH_SHORT).show();
                     return;
@@ -88,24 +86,27 @@ public class AddToDatabase extends AppCompatActivity {
                     return;
                 }
 
-                //přidej čas vytvoření
-                long createdTime = System.currentTimeMillis();
-
-                //vytvož nový záznam, přidej do něj data a přidej ho do databáze
+                //smaž starý záznam
                 realm.beginTransaction();
-                TDA zaznam = realm.createObject(TDA.class);
+                zaznam.deleteFromRealm();
 
-                zaznam.setDate(date);
-                zaznam.setJazyk(jazyk);
-                zaznam.setPopis(popis);
-                zaznam.setTime(time);
-                zaznam.setRate(rate);
-                zaznam.setCreatedTime(createdTime);
+                //vytvoř nový záznam a přidej do něj nová data + staré id
+                TDA novyZazanm = realm.createObject(TDA.class);
+
+                novyZazanm.setDate(date);
+                novyZazanm.setJazyk(jazyk);
+                novyZazanm.setPopis(popis);
+                novyZazanm.setTime(time);
+                novyZazanm.setRate(rate);
+                novyZazanm.setCreatedTime(Long.parseLong(createdTime));
 
                 realm.commitTransaction();
 
+                //křič uloženo
+                Toast.makeText(v.getContext(),alertUlozeno,Toast.LENGTH_SHORT).show();
+
                 //vrať se zpět na Main
-                Intent intent = new Intent(AddToDatabase.this, Main.class);
+                Intent intent = new Intent(Edit.this, Main.class);
                 startActivity(intent);
 
             }
