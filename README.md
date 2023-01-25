@@ -8,7 +8,7 @@
 ## Základ
 - [X] 20 | Zobrazit přidané záznamy
 - [X] 10 | Přidat nový záznam s atributy: datum, strávený čas, programovací jazyk, hodnocení, popis
-- [ ]  6 | Nemožnost vložit nevalidní data: datum 
+- [X]  6 | Nemožnost vložit nevalidní data: datum 
 - [X]  2 | Nemožnost vložit nevalidní data: časový údaj
 - [X]  2 | Nemožnost vložit nevalidní data: hodnocení
 - [X] 20 | Upravit záznam
@@ -59,8 +59,8 @@
  -  50 | UX Bonus 
 
 ## Celkem
- - 15/36 Rozšíření (41,7%)
- -	224/500 Bodů za funkcionalitu (44,8%)
+ - 16/36 Rozšíření (44,4%)
+ -	230/500 Bodů za funkcionalitu (46,0%)
 
 [^1]:netušim co má znamenat "Persistence práce se záznamy"
 [^2]:nepoužíváme SQL, takže aplikace není zranitelná vůči SQL Injection
