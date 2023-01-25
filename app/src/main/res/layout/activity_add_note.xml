@@ -6,158 +6,199 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context=".AddToDatabase">
 
-
-    <TextView
-        android:id="@+id/titletext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="Přidat záznam"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/dateinput"
+        <ImageView
+            android:id="@+id/bg"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:background="#BBBBFF"
-            android:hint="Datum"
-            android:inputType="date"
-            android:lines="1"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textColorHint="#8000"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bg" />
+
+        <TextView
+            android:id="@+id/gradient"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/titletext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:gravity="center"
+            android:text="Nový Záznam"
+            android:textColor="@color/tmave_modra"
+            android:textSize="30dp"
+            android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <EditText
+            android:id="@+id/dateinput"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/okraj_input"
+            android:enabled="false"
+            android:hint="Datum"
+            android:inputType="date"
+            android:lines="1"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/svetle_modra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titletext" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/datebtn"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginRight="10dp"
-            android:backgroundTint="#00F"
-            android:text="Vyber"
+            android:background="@drawable/okraj_button"
+            android:text="Výběr"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/tmave_modra"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dateinput"
             app:layout_constraintEnd_toEndOf="@+id/dateinput"
             app:layout_constraintTop_toTopOf="@+id/dateinput" />
 
         <EditText
             android:id="@+id/jazykinput"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:background="#BBBBFF"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/okraj_input"
+            android:enabled="false"
             android:hint="Programovací jazyk"
             android:inputType="text"
             android:lines="1"
-            android:padding="5dp"
+            android:padding="8dp"
             android:textColor="@color/black"
-            android:textColorHint="#8000"
+            android:textColorHint="@color/svetle_modra"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateinput" />
 
-        <SeekBar
-            android:id="@+id/rateinput"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="194dp"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/jazykbtn"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="#BBBBFF"
-            android:indeterminate="false"
-            android:max="4"
-            android:progress="0"
-            android:progressTint="#FF0000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jazykinput" />
+            android:layout_marginRight="10dp"
+            android:background="@drawable/okraj_button"
+            android:text="▼"
+            android:textAllCaps="false"
+            android:textColor="@color/tmave_modra"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/jazykinput"
+            app:layout_constraintEnd_toEndOf="@+id/jazykinput"
+            app:layout_constraintTop_toTopOf="@+id/jazykinput" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:id="@+id/textHodnoceni"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Hodnocení"
-            android:textAlignment="viewStart"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/okraj_input"
+            android:lineSpacingMultiplier="2"
+            android:padding="8dp"
+            android:text="Hodnocení\n"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="#000000"
             android:textSize="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/timeinput"
-            app:layout_constraintEnd_toStartOf="@+id/rateinput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/jazykinput" />
+
+        <RatingBar
+            android:id="@+id/rateinput"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:progressTint="@color/black"
+            android:stepSize="1"
+            app:layout_constraintBottom_toBottomOf="@+id/textHodnoceni"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/timeinput"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="#BBBBFF"
-            android:gravity="top"
-            android:hint="Čas"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/okraj_input"
+            android:hint="Strávený čas"
             android:inputType="numberSigned"
             android:lines="1"
-            android:padding="5dp"
+            android:padding="8dp"
             android:textColor="#000000"
-            android:textColorHint="#8000"
+            android:textColorHint="@color/svetle_modra"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rateinput" />
+            app:layout_constraintTop_toBottomOf="@+id/textHodnoceni" />
 
         <EditText
             android:id="@+id/descriptioninput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="#BBBBFF"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/okraj_input"
             android:gravity="top"
-            android:hint="Popis"
+            android:hint="Vlastní popis"
             android:lines="3"
-            android:padding="5dp"
+            android:padding="8dp"
             android:textColor="#000000"
-            android:textColorHint="#8000"
+            android:textColorHint="@color/svetle_modra"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timeinput" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/savebtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:backgroundTint="#00F"
-            android:text="Uložit"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/okraj_button"
+            android:text="Vytvořit"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.512"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/tmave_modra"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/descriptioninput"
             app:layout_constraintTop_toBottomOf="@+id/descriptioninput" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1         2         3          4          5"
-            android:textSize="13.5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/rateinput"
-            app:layout_constraintEnd_toEndOf="@+id/rateinput"
-            app:layout_constraintStart_toStartOf="@+id/rateinput" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

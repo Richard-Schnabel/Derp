@@ -62,7 +62,7 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
         holder.popisOut.setText(zaznam.getPopis().equals("") ? errInputNull : zaznam.getPopis());
         holder.dateOut.setText(zaznam.getDate().equals("") ? errInputNull : zaznam.getDate());
         holder.jazykOut.setText(zaznam.getJazyk().equals("") ? errInputNull : zaznam.getJazyk());
-        holder.rateOut.setText(zaznam.getRate().equals("") ? errInputNull : (Integer.parseInt(zaznam.getRate()) + 1) + " / 5");
+        holder.rateOut.setText(zaznam.getRate().equals("") ? errInputNull : Integer.parseInt(zaznam.getRate()) + " / 5");
         holder.timeOut.setText(zaznam.getTime().equals("") ? errInputNull : zaznam.getTime() + " min");
 
         //po podržení záznamu

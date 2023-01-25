@@ -1,18 +1,23 @@
 package com.example.derp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import io.realm.Realm;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+
+import java.util.Objects;
 
 public class AddToDatabase extends AppCompatActivity {
 
@@ -29,7 +34,7 @@ public class AddToDatabase extends AppCompatActivity {
         //najdi všechny inputy
         EditText jazykInput = findViewById(R.id.jazykinput);
         EditText popisInput = findViewById(R.id.descriptioninput);
-        SeekBar rateInput = findViewById(R.id.rateinput);
+        RatingBar rateInput = findViewById(R.id.rateinput);
         EditText dateInput = findViewById(R.id.dateinput);
         EditText timeInput = findViewById(R.id.timeinput);
 
@@ -41,6 +46,7 @@ public class AddToDatabase extends AppCompatActivity {
         //najdi buttony
         Button saveButton = findViewById(R.id.savebtn);
         Button dateBtn = findViewById(R.id.datebtn);
+        Button jazykBtn = findViewById(R.id.jazykbtn);
 
         //připoj se k databázi
         Realm.init(getApplicationContext());
@@ -54,6 +60,45 @@ public class AddToDatabase extends AppCompatActivity {
                 //zobraz kalendář
                 Intent intent = new Intent(AddToDatabase.this, Calendar.class);
                 startActivity(intent);
+            }
+        });
+
+        //po kliknutí na jazykBtn
+        jazykBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //definuj jazyky do nabídky
+                String[] jazyky = {"C", "C++", "C#", "Go" ,"Java", "JavaScript", "MATLAB", "Ook!", "PHP", "Python", "Scratch", "Swift", "--Jiný--"};
+
+                //postav Alert Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddToDatabase.this);
+                builder.setTitle("Vyber jazyk");
+
+                //po kliknutí na možnost
+                builder.setSingleChoiceItems(jazyky, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int polozka) {
+
+                        //vypni nabídku
+                        dialogInterface.dismiss();
+
+                        //pokud je "Jiný" tak povol psaní
+                        String jazyk = jazyky[polozka];
+                        if (Objects.equals(jazyk, "--Jiný--")) {
+                            jazykInput.setText("");
+                            jazykInput.setEnabled(Boolean.TRUE);
+                            return;
+                        }
+
+                        //jinak ne a ulož jazyk do inputu
+                        jazykInput.setEnabled(Boolean.FALSE);
+                        jazykInput.setText(jazyk);
+                    }
+                });
+
+                //zobraz Alert Dialog
+                builder.show();
             }
         });
 

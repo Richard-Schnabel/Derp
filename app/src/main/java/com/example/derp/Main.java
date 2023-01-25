@@ -85,6 +85,7 @@ public class Main extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int polozka) {
 
+                        dialogInterface.dismiss();
                         //nastav podle čeho má být řazeno
                         String sortBy = sortIndex[polozka];
 

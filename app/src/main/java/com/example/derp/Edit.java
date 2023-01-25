@@ -1,16 +1,21 @@
 package com.example.derp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Objects;
 
 import io.realm.Realm;
 
@@ -34,12 +39,14 @@ public class Edit extends AppCompatActivity {
         //najdi všechny inputy
         EditText jazykInput = findViewById(R.id.jazykinput);
         EditText popisInput = findViewById(R.id.descriptioninput);
-        SeekBar rateInput = findViewById(R.id.rateinput);
+        RatingBar rateInput = findViewById(R.id.rateinput);
         EditText dateInput = findViewById(R.id.dateinput);
         EditText timeInput = findViewById(R.id.timeinput);
 
         //najdi všechny buttony
         Button saveButton = findViewById(R.id.savebtn);
+        Button jazykBtn = findViewById(R.id.jazykbtn);
+        //!!CHYBÍ KALENDÁŘ!!
 
         //připoj se k databázi
         Realm.init(getApplicationContext());
@@ -54,6 +61,45 @@ public class Edit extends AppCompatActivity {
         rateInput.setProgress(Integer.parseInt(zaznam.getRate()));
         dateInput.setText(zaznam.getDate());
         timeInput.setText(zaznam.getTime());
+
+        //po kliknutí na jazykBtn
+        jazykBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //definuj jazyky do nabídky
+                String[] jazyky = {"C", "C++", "C#", "Go" ,"Java", "JavaScript", "MATLAB", "Ook!", "PHP", "Python", "Scratch", "Swift", "--Jiný--"};
+
+                //postav Alert Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(Edit.this);
+                builder.setTitle("Vyber jazyk");
+
+                //po kliknutí na možnost
+                builder.setSingleChoiceItems(jazyky, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int polozka) {
+
+                        //vypni nabídku
+                        dialogInterface.dismiss();
+
+                        //pokud je "Jiný" tak povol psaní
+                        String jazyk = jazyky[polozka];
+                        if (Objects.equals(jazyk, "--Jiný--")) {
+                            jazykInput.setText("");
+                            jazykInput.setEnabled(Boolean.TRUE);
+                            return;
+                        }
+
+                        //jinak ne a ulož jazyk do inputu
+                        jazykInput.setEnabled(Boolean.FALSE);
+                        jazykInput.setText(jazyk);
+                    }
+                });
+
+                //zobraz Alert Dialog
+                builder.show();
+            }
+        });
 
         //po kliknutí na save
         saveButton.setOnClickListener(new View.OnClickListener() {
