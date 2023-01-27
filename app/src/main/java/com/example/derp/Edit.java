@@ -23,6 +23,7 @@ public class Edit extends AppCompatActivity {
 
     //definuj texty
     String alertUlozeno = "Záznam byl uložen";
+    String alertDeleted = "Odstraněno";
     String alertJazykNenastaven = "Zadejte prosím Jazyk";
     String alertDateNenastaven = "Zadejte prosím Datum";
     String alertTimeNenastaven = "Zadejte prosím Čas";
@@ -46,7 +47,8 @@ public class Edit extends AppCompatActivity {
         //najdi všechny buttony
         Button saveButton = findViewById(R.id.savebtn);
         Button jazykBtn = findViewById(R.id.jazykbtn);
-        //!!CHYBÍ KALENDÁŘ!!
+        Button deleteBtn = findViewById(R.id.deletebtn);
+        Button dateBtn = findViewById(R.id.datebtn);
 
         //připoj se k databázi
         Realm.init(getApplicationContext());
@@ -62,6 +64,25 @@ public class Edit extends AppCompatActivity {
         dateInput.setText(zaznam.getDate());
         timeInput.setText(zaznam.getTime());
 
+        //pokud je date z kalendáře nastavené, ulož ho a vlož ho do inputy
+        if (incomingIntent.hasExtra("date")) {
+            String date = incomingIntent.getStringExtra("date");
+            dateInput.setText(date);
+        }
+
+        //po kliknutí na kalendář
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //zobraz kalendář
+                Intent intent = new Intent(Edit.this, Calendar.class);
+
+                intent.putExtra("odkud", "edit");
+                intent.putExtra("id", createdTime);
+                startActivity(intent);
+            }
+        });
         //po kliknutí na jazykBtn
         jazykBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +96,7 @@ public class Edit extends AppCompatActivity {
                 builder.setTitle("Vyber jazyk");
 
                 //po kliknutí na možnost
-                builder.setSingleChoiceItems(jazyky, 0, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(jazyky, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int polozka) {
 
@@ -100,6 +121,31 @@ public class Edit extends AppCompatActivity {
                 builder.show();
             }
         });
+
+        //po kilkuntí na delete button
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //připoj se k databázi
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+
+                //smash záznam
+                zaznam.deleteFromRealm();
+                realm.commitTransaction();
+
+                //křič "smazáno"
+                Toast.makeText(getBaseContext(),alertDeleted,Toast.LENGTH_SHORT).show();
+
+                //reloadni Main bez animace
+                Intent intent = new Intent(getBaseContext(), Main.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //nevim co to dela, ale bez toho to nefunguje
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                getBaseContext().startActivity(intent);
+            }
+        });
+
 
         //po kliknutí na save
         saveButton.setOnClickListener(new View.OnClickListener() {

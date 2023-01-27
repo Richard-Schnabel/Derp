@@ -25,6 +25,7 @@
         android:id="@+id/jazykout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="PHP"
         android:textColor="@color/tmave_modra"
         android:textSize="20dp"
@@ -35,6 +36,7 @@
         android:id="@+id/rateout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="5/5"
         android:textColor="@color/tmave_modra"
         android:textSize="20sp"
@@ -61,5 +63,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jazykout" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/settingsbtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/okraj_settings"
+        android:gravity="center"
+        android:lineSpacingMultiplier="0"
+        android:text="⚙"
+        android:textAllCaps="false"
+        android:textColor="@color/tmave_modra"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

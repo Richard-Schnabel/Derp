@@ -15,7 +15,7 @@
 - [X] 10 | Odstranit záznam
 - [X]  5 | Přidání záznamu s atributy shodnými s již vytvořeným záznamem vytvoří validní záznam
 - [X]  5 | Odstranění záznamu s atributy shodnými s již vytvořeným záznamem odstraní pouze zamýšlený záznam
-- [ ] 20 | Persistence práce se záznamy[^1]
+- [X] 20 | Persistence práce se záznamy[^1]
 
 ## Červené Rozšiření
 - [X] 10 | Seřadit zobrazené záznamy dle následujících atributů:datum
@@ -23,7 +23,7 @@
 - [X] 10 | Seřadit zobrazené záznamy dle následujících atributů:programovací jazyk
 - [X] 10 | Seřadit zobrazené záznamy dle následujících atributů:hodnocení
 - [X] 10 | Řazení zachovává pořadí z předchozího kroku
-- [ ] 40 | Filtrovat zobrazené záznamy (dle atributů viz. požadavek 5)
+- [X] 40 | Filtrovat zobrazené záznamy (dle atributů viz. požadavek 5)
 - [ ] 10 | Filtrování zobrazí průnik vybraných filtrů
 
 ## Zelené Rozšiření
@@ -59,8 +59,8 @@
  -  50 | UX Bonus 
 
 ## Celkem
- - 16/36 Rozšíření (44,4%)
- -	230/500 Bodů za funkcionalitu (46,0%)
+ - Rozšíření (50,0%)
+ - 290/500 Bodů za funkcionalitu (58,0%)
 
 [^1]:netušim co má znamenat "Persistence práce se záznamy"
 [^2]:nepoužíváme SQL, takže aplikace není zranitelná vůči SQL Injection

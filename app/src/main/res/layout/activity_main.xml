@@ -10,7 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#F1F6FF">
 
         <ImageView
             android:id="@+id/imageBg"
@@ -83,26 +84,11 @@
                 android:padding="10dp"
                 android:text="Seřaď ▼"
                 android:textAllCaps="false"
+                android:textColor="@color/tmave_modra"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/filterbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/okraj_button"
-                android:padding="10dp"
-                android:text="Filtr ▼"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/sortorderbtn"
-                app:layout_constraintStart_toEndOf="@+id/sortbybtn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -112,15 +98,52 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/okraj_button"
                 android:freezesText="false"
+                android:gravity="center"
                 android:lineSpacingMultiplier=".75"
                 android:text="▲\n▼"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="20sp"
+                android:textColor="@color/tmave_modra"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/sortorderbtn"
+                app:layout_constraintStart_toEndOf="@+id/sortbybtn">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/filterbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/okraj_button"
+                    android:padding="10dp"
+                    android:text="Filtr ▼"
+                    android:textAllCaps="false"
+                    android:textColor="@color/tmave_modra"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/filterinput"
+                    android:layout_width="95dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/okraj_input"
+                    android:gravity="center"
+                    android:hint="Obsahuje"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/svetle_modra" />
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

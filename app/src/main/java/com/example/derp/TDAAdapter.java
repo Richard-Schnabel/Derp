@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.prefs.Preferences;
 
 import io.realm.Realm;
@@ -28,22 +30,23 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
     String hoverDelete = "Odstranit";
     String hoverEdit = "Upravit";
     String alertDeleted = "Odstraněno";
-
     Context context;
     RealmResults<TDA> zaznamy;
 
     public TDAAdapter(Context context, RealmResults<TDA> zaznamy) {
         this.context = context;
 
+
         //získej uložené nastavení a pokud není zvoleno, tak createdTime sestupně
         Preferences prefs = Preferences.userNodeForPackage(this.getClass());
         String sortOrder = prefs.get("sortOrder", Sort.DESCENDING.toString());
         String sortBy = prefs.get("sortBy", "createdTime");
+        String filterText = prefs.get("containsText","");
+        String filterBy = prefs.get("filterBy", "popis");
 
-        //tady budou podobně udělány filtry a reddit tagy
 
-        //seřaď záznamy
-        this.zaznamy = zaznamy.sort(sortBy, Sort.valueOf(sortOrder));
+        //zfiltruj a seřaď záznamy
+        this.zaznamy = zaznamy.where().contains(filterBy, filterText).findAll().where().findAllSorted(sortBy, Sort.valueOf(sortOrder));
     }
 
     @NonNull
@@ -59,69 +62,25 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
         TDA zaznam = zaznamy.get(position);
 
         //vpiš data záznamu z databáze do listu
-        holder.popisOut.setText(zaznam.getPopis().equals("") ? errInputNull : zaznam.getPopis());
-        holder.dateOut.setText(zaznam.getDate().equals("") ? errInputNull : zaznam.getDate());
-        holder.jazykOut.setText(zaznam.getJazyk().equals("") ? errInputNull : zaznam.getJazyk());
-        holder.rateOut.setText(zaznam.getRate().equals("") ? errInputNull : Integer.parseInt(zaznam.getRate()) + " / 5");
-        holder.timeOut.setText(zaznam.getTime().equals("") ? errInputNull : zaznam.getTime() + " min");
+        holder.popisOut.setText(zaznam.getPopis());
+        holder.dateOut.setText(zaznam.getDate());
+        holder.jazykOut.setText(zaznam.getJazyk());
+        holder.rateOut.setText(Integer.parseInt(zaznam.getRate()) + " / 5");
+        holder.timeOut.setText(zaznam.getTime() + " min");
 
-        //po podržení záznamu
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        //setting onclick
+        holder.settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View view) {
+                String id = String.valueOf(zaznam.getCreatedTime());
 
-                //vyskoč menu s buttony
-                PopupMenu menu = new PopupMenu(context,v);
-                menu.getMenu().add(hoverDelete);
-                menu.getMenu().add(hoverEdit);
-
-                //po kliknutí na něco
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        //pokud to něco je Delete
-                        if(item.getTitle().equals(hoverDelete)){
-
-                            //připoj se k databázi
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.beginTransaction();
-
-                            //smash záznam
-                            zaznam.deleteFromRealm();
-                            realm.commitTransaction();
-
-                            //křič "smazáno"
-                            Toast.makeText(context,alertDeleted,Toast.LENGTH_SHORT).show();
-
-                            //reloadni Main bez animace
-                            Intent intent = new Intent(v.getContext(), Main.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //nevim co to dela, ale bez toho to nefunguje
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            v.getContext().startActivity(intent);
-
-                        }
-
-                        //pokud to něco je Edit
-                        if(item.getTitle().equals(hoverEdit)){
-                            String id = String.valueOf(zaznam.getCreatedTime());
-
-                            //otevři Edit s animací
-                            Intent intent = new Intent(v.getContext(), Edit.class);
-                            intent.putExtra("id", id);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //nevim co to dela, ale bez toho to nefunguje
-                            v.getContext().startActivity(intent);
-                        }
-                        return true;
-                    }
-                });
-
-                //ukaž menu
-                menu.show();
-                return true;
+                //otevři Edit s animací
+                Intent intent = new Intent(context, Edit.class);
+                intent.putExtra("id", id);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //nevim co to dela, ale bez toho to nefunguje
+                context.startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -137,15 +96,19 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
         TextView rateOut;
         TextView dateOut;
 
+        Button settingBtn;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            //najdi všechny outputy
+            //najdi všechny outputy + button
             jazykOut = itemView.findViewById(R.id.jazykout);
             popisOut = itemView.findViewById(R.id.popisout);
             dateOut = itemView.findViewById(R.id.dateout);
             rateOut = itemView.findViewById(R.id.rateout);
             timeOut = itemView.findViewById(R.id.timeout);
+
+            settingBtn = itemView.findViewById(R.id.settingsbtn);
         }
     }
 }

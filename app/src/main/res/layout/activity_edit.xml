@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".AddToDatabase">
+    tools:context=".AddNew">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -140,6 +140,7 @@
 
         <RatingBar
             android:id="@+id/rateinput"
+            style="@style/CustomRatingBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:progressTint="@color/black"
@@ -177,7 +178,8 @@
             android:background="@drawable/okraj_input"
             android:gravity="top"
             android:hint="Vlastní popis"
-            android:lines="3"
+            android:maxLines="10"
+            android:minLines="3"
             android:padding="8dp"
             android:textColor="#000000"
             android:textColorHint="@color/svetle_modra"
@@ -187,17 +189,32 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/savebtn"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:background="@drawable/okraj_button"
-            android:text="Vytvořit"
+            android:text="Upravit"
             android:textAllCaps="false"
             android:textColor="@color/tmave_modra"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/descriptioninput"
+            app:layout_constraintTop_toBottomOf="@+id/descriptioninput" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/deletebtn"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/okraj_button"
+            android:text="Odstarnit"
+            android:textAllCaps="false"
+            android:textColor="@color/tmave_modra"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/descriptioninput"
             app:layout_constraintTop_toBottomOf="@+id/descriptioninput" />
 
 

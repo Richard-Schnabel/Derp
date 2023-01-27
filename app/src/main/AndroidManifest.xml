@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.tdaderp">
         <activity
-            android:name="com.example.derp.AddToDatabase"
+            android:name="com.example.derp.AddNew"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
 
