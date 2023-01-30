@@ -9,70 +9,61 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.prefs.Preferences;
 
 public class Main extends AppCompatActivity {
+
+    Dialog dialog;
+    RealmResults<TDA> notesList;
+    RecyclerView recyclerView;
+    TDAAdapter adapter;
+    Button filterBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
 
+        //Dialog dialog dialog
+        dialog = new Dialog(this);
+
         //připoj se k databázi
         Realm.init(getApplicationContext());
         Realm realm = Realm.getDefaultInstance();
 
         //yvtvoř adaptér pro záznamy a zavolej ho
-        RealmResults<TDA> notesList = realm.where(TDA.class).findAllSorted("createdTime", Sort.DESCENDING);
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        notesList = realm.where(TDA.class).findAllSorted("createdTime", Sort.DESCENDING);
+        recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        TDAAdapter adapter = new TDAAdapter(getApplicationContext(),notesList);
+        adapter = new TDAAdapter(getApplicationContext(),notesList);
         recyclerView.setAdapter(adapter);
 
         //najdi buttony
         Button pridatZaznamBtn = findViewById(R.id.pridatzaznambtn);
         Button sortOrderBtn = findViewById(R.id.sortorderbtn);
         Button sortByBtn = findViewById(R.id.sortbybtn);
-        Button filterBtn = findViewById(R.id.filterbtn);
-
-        //najdi input
-        EditText filterInput = findViewById(R.id.filterinput);
-
-        filterInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                //získej uložené nastavení
-                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                prefs.put("containsText", filterInput.getText().toString());
-
-                //reloadni zaznamy
-                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-
+        filterBtn = findViewById(R.id.filterbtn);
 
         //po klkiknutí na "přidat záznam"...
         pridatZaznamBtn.setOnClickListener(new View.OnClickListener() {
@@ -109,38 +100,7 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //definuj možnosti a jejich hodnoty
-                String[] sortMoznosti = {"Hodnocení", "Čas strávený", "Datum", "Programovací jazyk", "Popis"};
-                String[] sortIndex = {"rate", "time", "date", "jazyk", "popis"};
-
-                //získej uložené nastavení
-                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                int selected = Arrays.asList(sortIndex).indexOf(prefs.get("filterBy", "popis"));
-
-                //postav Alert Dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                builder.setTitle("Vyber podle čeho filter");
-
-                //po kliknutí na možnost
-                builder.setSingleChoiceItems(sortMoznosti, selected, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int polozka) {
-
-                        dialogInterface.dismiss();
-                        //nastav podle čeho má být filtrováno
-                        String filterBy = sortIndex[polozka];
-
-                        //změň nastavení na to vybrané
-                        prefs.put("filterBy", filterBy);
-
-                        //reloadni zaznamy
-                        TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-
-                //zobraz Alert Dialog
-                builder.show();
+                openFilterByDialog();
             }
         });
 
@@ -148,41 +108,222 @@ public class Main extends AppCompatActivity {
         sortByBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                openSortByDialog();
 
-                //definuj možnosti a jejich hodnoty
-                String[] sortMoznosti = {"Čas vytvoření", "Hodnocení", "Čas strávený", "Datum", "Programovací jazyk"};
-                String[] sortIndex = {"createdTime", "rate", "time", "date", "jazyk"};
+            }
+        });
+    }
+
+    private void openFilterByDialog() {
+        //vytvoř alert
+        dialog.setContentView(R.layout.alert_filter_by);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        //najdi všechny inputy
+        EditText filterByTime = dialog.findViewById(R.id.filterByTime);
+        EditText filterByDate = dialog.findViewById(R.id.filterByDate);
+        EditText filterByJazyk = dialog.findViewById(R.id.filterByJazyk);
+        EditText filterByRate = dialog.findViewById(R.id.filterByRate);
+
+        //po upravení kteréhokoliv textu
+        filterByTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
 
                 //získej uložené nastavení
                 Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                int selected = Arrays.asList(sortIndex).indexOf(prefs.get("sortBy", "createdTime"));
+                prefs.put("containsText", filterByTime.getText().toString());
+                prefs.put("filterBy", "time");
 
-                //postav Alert Dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                builder.setTitle("Vyber podle čeho sort");
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
 
-                //po kliknutí na možnost
-                builder.setSingleChoiceItems(sortMoznosti, selected, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int polozka) {
-
-                        dialogInterface.dismiss();
-                        //nastav podle čeho má být řazeno
-                        String sortBy = sortIndex[polozka];
-
-                        //změň nastavení na to vybrané
-                        prefs.put("sortBy", sortBy);
-
-                        //reloadni zaznamy
-                        TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-
-                //zobraz Alert Dialog
-                builder.show();
+                //zmeň filter button text
+                filterBtn.setText("Filtr: Čas");
             }
         });
+        filterByDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                //získej uložené nastavení
+                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+                prefs.put("containsText", filterByDate.getText().toString());
+                prefs.put("filterBy", "date");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zmeň filter button text
+                filterBtn.setText("Filtr: Datum");
+            }
+        });
+        filterByJazyk.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                //získej uložené nastavení
+                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+                prefs.put("containsText", filterByJazyk.getText().toString());
+                prefs.put("filterBy", "jazyk");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zmeň filter button text
+                filterBtn.setText("Filtr: Jazyk");
+            }
+        });
+        filterByRate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                //získej uložené nastavení
+                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+                prefs.put("containsText", filterByRate.getText().toString());
+                prefs.put("filterBy", "rate");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zmeň filter button text
+                filterBtn.setText("Filtr: Hodnocení");
+            }
+        });
+
+        //zobraz alert
+        dialog.show();
+    }
+
+    private void openSortByDialog() {
+
+        //vytvoř alert
+        dialog.setContentView(R.layout.alert_sort_by);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        //najdi všechny inputy
+        RadioButton sortByCreatedTime = dialog.findViewById(R.id.sortByCreatedTime);
+        RadioButton sortByDatum = dialog.findViewById(R.id.sortByDatum);
+        RadioButton sortByTime = dialog.findViewById(R.id.sortByTime);
+        RadioButton sortByJazyk = dialog.findViewById(R.id.sortByJazyk);
+        RadioButton sortByRate = dialog.findViewById(R.id.sortByRate);
+
+        //získej uložené nastavení a nastav selected
+        Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+        String sortBy = prefs.get("sortBy","createdTime");
+        if (sortBy.equals("createdTime")) { sortByCreatedTime.setChecked(true); }
+        if (sortBy.equals("date")) { sortByDatum.setChecked(true); }
+        if (sortBy.equals("time")) { sortByTime.setChecked(true); }
+        if (sortBy.equals("jazyk")) { sortByJazyk.setChecked(true); }
+        if (sortBy.equals("rate")) { sortByRate.setChecked(true); }
+
+        //po kilkuní na možnost
+        sortByCreatedTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //změň nastavení na date
+                prefs.put("sortBy", "createdTime");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zavři okno
+                dialog.dismiss();
+            }
+        });
+        sortByDatum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //změň nastavení na date
+                prefs.put("sortBy", "date");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zavři okno
+                dialog.dismiss();
+            }
+        });
+        sortByTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //změň nastavení na date
+                prefs.put("sortBy", "time");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zavři okno
+                dialog.dismiss();
+            }
+        });
+        sortByJazyk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //změň nastavení na date
+                prefs.put("sortBy", "jazyk");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zavři okno
+                dialog.dismiss();
+            }
+        });
+        sortByRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //změň nastavení na date
+                prefs.put("sortBy", "rate");
+
+                //reloadni zaznamy
+                TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
+                recyclerView.setAdapter(adapter);
+
+                //zavři okno
+                dialog.dismiss();
+            }
+        });
+
+        //ukaž alert
+        dialog.show();
     }
 
     //přepiš back button na nic

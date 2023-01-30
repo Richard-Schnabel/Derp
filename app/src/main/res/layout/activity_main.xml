@@ -110,40 +110,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/filterbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
+                android:background="@drawable/okraj_button"
+                android:padding="10dp"
+                android:text="Filtr: Různé"
+                android:textAllCaps="false"
+                android:textColor="@color/tmave_modra"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/sortorderbtn"
-                app:layout_constraintStart_toEndOf="@+id/sortbybtn">
+                app:layout_constraintStart_toEndOf="@+id/sortbybtn"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/filterbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/okraj_button"
-                    android:padding="10dp"
-                    android:text="Filtr ▼"
-                    android:textAllCaps="false"
-                    android:textColor="@color/tmave_modra"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/filterinput"
-                    android:layout_width="95dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/okraj_input"
-                    android:gravity="center"
-                    android:hint="Obsahuje"
-                    android:padding="8dp"
-                    android:textColor="#000000"
-                    android:textColorHint="@color/svetle_modra" />
-
-            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
