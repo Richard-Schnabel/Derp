@@ -41,12 +41,13 @@ public class TDAAdapter extends RecyclerView.Adapter<TDAAdapter.MyViewHolder> {
         Preferences prefs = Preferences.userNodeForPackage(this.getClass());
         String sortOrder = prefs.get("sortOrder", Sort.DESCENDING.toString());
         String sortBy = prefs.get("sortBy", "createdTime");
-        String filterText = prefs.get("containsText","");
-        String filterBy = prefs.get("filterBy", "popis");
-
 
         //zfiltruj a seřaď záznamy
-        this.zaznamy = zaznamy.where().contains(filterBy, filterText).findAll().where().findAllSorted(sortBy, Sort.valueOf(sortOrder));
+        this.zaznamy = zaznamy.where().contains("time", prefs.get("filterTime", "")).findAll();
+        this.zaznamy = this.zaznamy.where().contains("date", prefs.get("filterDate", "")).findAll();
+        this.zaznamy = this.zaznamy.where().contains("jazyk", prefs.get("filterJazyk", "")).findAll();
+        this.zaznamy = this.zaznamy.where().contains("rate", prefs.get("filterRate", "")).findAll();
+        this.zaznamy = this.zaznamy.where().findAllSorted(sortBy, Sort.valueOf(sortOrder));
     }
 
     @NonNull

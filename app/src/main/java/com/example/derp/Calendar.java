@@ -37,8 +37,6 @@ public class Calendar extends AppCompatActivity {
 
                 //vrať se zpět odkud is přišel a datum si pamatuj datum
                 Intent intent;
-                intent = new Intent(Calendar.this, AddNew.class);
-                Toast.makeText(getBaseContext(),odkud + " != edit", Toast.LENGTH_SHORT).show();
                 if (Objects.equals(odkud, "edit")) {
                     intent = new Intent(Calendar.this, Edit.class);
                     intent.putExtra("id", id);

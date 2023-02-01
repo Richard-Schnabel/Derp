@@ -125,6 +125,16 @@ public class Main extends AppCompatActivity {
         EditText filterByJazyk = dialog.findViewById(R.id.filterByJazyk);
         EditText filterByRate = dialog.findViewById(R.id.filterByRate);
 
+
+        //získej uložené nastavení
+        Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+
+        //napiš do nich data uložená ve filtru
+        filterByTime.setText(prefs.get("filterTime",""));
+        filterByDate.setText(prefs.get("filterDate",""));
+        filterByJazyk.setText(prefs.get("filterJazyk",""));
+        filterByRate.setText(prefs.get("filterRate",""));
+
         //po upravení kteréhokoliv textu
         filterByTime.addTextChangedListener(new TextWatcher() {
             @Override
@@ -136,10 +146,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                //získej uložené nastavení
-                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                prefs.put("containsText", filterByTime.getText().toString());
-                prefs.put("filterBy", "time");
+                //ulož filter
+                prefs.put("filterTime", filterByTime.getText().toString());
 
                 //reloadni zaznamy
                 TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
@@ -159,10 +167,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                //získej uložené nastavení
-                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                prefs.put("containsText", filterByDate.getText().toString());
-                prefs.put("filterBy", "date");
+                //ulož filter
+                prefs.put("filterDate", filterByDate.getText().toString());
 
                 //reloadni zaznamy
                 TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
@@ -182,10 +188,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                //získej uložené nastavení
-                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                prefs.put("containsText", filterByJazyk.getText().toString());
-                prefs.put("filterBy", "jazyk");
+                //ulož filter
+                prefs.put("filterJazyk", filterByJazyk.getText().toString());
 
                 //reloadni zaznamy
                 TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
@@ -205,10 +209,8 @@ public class Main extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                //získej uložené nastavení
-                Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-                prefs.put("containsText", filterByRate.getText().toString());
-                prefs.put("filterBy", "rate");
+                //ulož filter
+                prefs.put("filterRate", filterByRate.getText().toString());
 
                 //reloadni zaznamy
                 TDAAdapter adapter = new TDAAdapter(getApplicationContext(), notesList);
