@@ -24,7 +24,7 @@
 - [X] 10 | Seřadit zobrazené záznamy dle následujících atributů:hodnocení
 - [X] 10 | Řazení zachovává pořadí z předchozího kroku
 - [X] 40 | Filtrovat zobrazené záznamy (dle atributů viz. požadavek 5)
-- [ ] 10 | Filtrování zobrazí průnik vybraných filtrů
+- [X] 10 | Filtrování zobrazí průnik vybraných filtrů
 
 ## Zelené Rozšiření
 - [ ] 20 | Přidat nového programátora
@@ -59,10 +59,9 @@
  -  50 | UX Bonus 
 
 ## Celkem
- - Rozšíření (50,0%)
- - 290/500 Bodů za funkcionalitu (58,0%)
+ - 19/36 Rozšíření (52,8%)
+ - 300/500 Bodů za funkcionalitu (60,0%)
 
-[^1]:netušim co má znamenat "Persistence práce se záznamy"
 [^2]:nepoužíváme SQL, takže aplikace není zranitelná vůči SQL Injection
 
 # Download
