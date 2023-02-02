@@ -209,7 +209,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:background="@drawable/okraj_button"
-            android:text="Odstarnit"
+            android:text="Odstranit"
             android:textAllCaps="false"
             android:textColor="@color/tmave_modra"
             android:textSize="20sp"
