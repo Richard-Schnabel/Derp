@@ -1,6 +1,6 @@
 ![alt](https://user-images.githubusercontent.com/123179478/213934307-720f87a6-fccc-40d3-96e8-684c079a042a.png)
 ## DERP *(Developer's Engine for Recording Programing)*
-- *Kapitán* - Vojtěch Borovský!
+- *Kapitán* - Vojtěch Borovský
 - *Kód* - Richard Schnábel
 - *Design* - Ondřej Malý
 
