@@ -5,11 +5,11 @@
 - *Design* - Ondřej Malý
 
 # Download
-- https://github.com/Richard-Schnabel/Derp/blob/main/app/release/app-release.apk
+- https://github.com/Richard-Schnabel/Derp/raw/main/app/release/app-release.apk
 <img src="https://user-images.githubusercontent.com/123179478/216705720-3bfa9766-66b6-4842-82ca-282d51393508.jpeg" width="100" height="100">
 
 # Zadání Nominačního kola *https://tourdeapp.cz/zadani*
-## Základ
+## <img src="https://tourdeapp.cz/storage/images/2022_09_28/dc2578d443af644c6d57ac049700b5e563341664e8384/cropped.png" width="25" height="25"> Základ
 - [X] 20 | Zobrazit přidané záznamy
 - [X] 10 | Přidat nový záznam s atributy: datum, strávený čas, programovací jazyk, hodnocení, popis
 - [X]  6 | Nemožnost vložit nevalidní data: datum 
