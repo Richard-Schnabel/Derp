@@ -19,7 +19,7 @@
 - [X] 10 | Odstranit záznam
 - [X]  5 | Přidání záznamu s atributy shodnými s již vytvořeným záznamem vytvoří validní záznam
 - [X]  5 | Odstranění záznamu s atributy shodnými s již vytvořeným záznamem odstraní pouze zamýšlený záznam
-- [X] 20 | Persistence práce se záznamy[^1]
+- [X] 20 | Persistence práce se záznamy
 
 ## ![icon](https://placehold.co/15x15/FF0000/FF0000.png) Červené Rozšiření
 - [X] 10 | Seřadit zobrazené záznamy dle následujících atributů:datum
