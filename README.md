@@ -65,4 +65,4 @@
 [^2]:nepoužíváme SQL, takže aplikace není zranitelná vůči SQL Injection
 
 # Download
-https://github.com/Richard-Schnabel/Derp/blob/main/app/debug/app-debug.apk
+https://github.com/Richard-Schnabel/Derp/blob/main/app/release/app-release.apk
