@@ -65,6 +65,7 @@
 ## Celkem
  - 19/36 Rozšíření (52,8%)
  - 300/500 Bodů za funkcionalitu (60,0%)
+ - ???/250 Bodů za UI a UX (??,?%)
  
 # Design / Concept Art
 ![Nový Záznam select](https://user-images.githubusercontent.com/123179478/216705340-5697d061-f2b9-4014-b58b-d3be3714d5f9.jpg)
