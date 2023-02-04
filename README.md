@@ -4,8 +4,10 @@
 - *Kód* - Richard Schnábel
 - *Design* - Ondřej Malý
 
-# Download
+# Download - Android
 - https://github.com/Richard-Schnabel/Derp/raw/main/app/release/app-release.apk
+- Na android zařízení stáhněte naší aplikaci z odkazu výše. Aplikaci nainstalujte a poté ji spusťte.
+- (Pokud aplikace nelze nainstalovat, nejdříve odinstalujte její starší verzi)
 <img src="https://user-images.githubusercontent.com/123179478/216705720-3bfa9766-66b6-4842-82ca-282d51393508.jpeg" width="100" height="100">
 
 # Zadání Nominačního kola *https://tourdeapp.cz/zadani*
